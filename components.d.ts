@@ -8,6 +8,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Dock: typeof import('./src/components/dock/Dock.vue')['default']
+    DockIcon: typeof import('./src/components/dock/DockIcon.vue')['default']
+    DockSeparator: typeof import('./src/components/dock/DockSeparator.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElInput: typeof import('element-plus/es')['ElInput']

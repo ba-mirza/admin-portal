@@ -14,6 +14,21 @@
             <el-splitter-panel :min="200">
                 <div class="demo-panel">
                     <h1>Authorization</h1>
+                    <Dock class="mb-6 justify-center">
+                        <DockIcon>
+                            Главная
+                        </DockIcon>
+                        <DockSeparator />
+                        <DockIcon>
+                            Создать
+                        </DockIcon>
+                        <DockIcon>
+                            Категории
+                        </DockIcon>
+                        <DockIcon>
+                            Статьи
+                        </DockIcon>
+                    </Dock>
                 </div>
             </el-splitter-panel>
         </el-splitter>
