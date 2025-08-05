@@ -30,6 +30,5 @@ const form = reactive({
 
 const toAuth = (e: Event) => {
     e.preventDefault();
-    
 }
 </script>
