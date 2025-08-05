@@ -1,10 +1,19 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
 
 </script>
 
 <template>
-  <QuillEditor placeholder="DEV" toolbar="full" theme="snow" />
+  <ul>
+    <li>
+      <RouterLink to="/">Home</RouterLink>
+    </li>
+    <li>
+      <RouterLink to="/notFound">Not Found</RouterLink>
+    </li>
+    <RouterView />
+  </ul>
+
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
