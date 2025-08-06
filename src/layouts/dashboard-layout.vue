@@ -1,0 +1,41 @@
+<template>
+    <div class="common-layout">
+        <el-container>
+            <el-aside class="bg-white/50 border-r-1 border-gray-400 border-dashed" width="400px">
+                <div class="flex justify-center mt-5">
+                    <h1 class="text-5xl">LOGO</h1>
+                </div>
+                <div class="mt-10 m-auto w-xs border-1 rounded-lg border-gray-400 p-4 bg-white">
+                    <div class="flex items-center">
+                        <el-avatar class="m-4" size="large" :icon="UserFilled" />
+                        <div>
+                            <h1 class="select-none text-2xl font-medium">Firstname</h1>
+                            <h1 class="select-none text-md font-normal">Journalist</h1>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="mt-10 m-auto w-2xs flex flex-col items-center justify-center border-1 rounded-2xl border-gray-300 p-4 h-auto bg-white">
+                    <el-menu class="w-full" default-active="1" router>
+                        <el-menu-item index="2" route="/dashboard/create-article">
+                            <span>Создать</span>
+                        </el-menu-item>
+                        <el-menu-item disabled index="3" route="/dashboard/category">
+                            <span>Категория</span>
+                        </el-menu-item>
+                    </el-menu>
+                </div>
+            </el-aside>
+            <el-container>
+                <el-main class="m-10">
+                    <dashboard />
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+</template>
+
+<script setup lang="ts">
+import dashboard from '../pages/dashboard.vue';
+import { UserFilled } from '@element-plus/icons-vue'
+</script>

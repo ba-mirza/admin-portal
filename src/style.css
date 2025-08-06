@@ -110,4 +110,6 @@ body {
   padding: 0;
   box-sizing: border-box;
   height: 100vh;
+  background: #f3f5f7;
+  min-height: 100vh;
 }

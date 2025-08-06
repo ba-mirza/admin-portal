@@ -7,11 +7,11 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { createRouter, createWebHistory} from "vue-router";
 import NotFound from "./pages/notFound.vue";
 import Auth from "./pages/auth.vue";
-import Dashboard from "./pages/dashboard.vue";
 import { requireAuth, requireGuest } from "./router/guards";
 import { authStore } from "./stores/auth";
 
 import ElementPlus from "element-plus"
+import DashboardLayout from "./layouts/dashboard-layout.vue";
 
 const router = createRouter({
   routes: [
@@ -23,8 +23,8 @@ const router = createRouter({
     },
     {
       path: "/dashboard",
-      component: Dashboard,
-      beforeEnter: requireAuth,
+      component: DashboardLayout,
+      // beforeEnter: requireAuth,
     },
     { path: "/notFound", component: NotFound },
     { path: "/:pathMatch(.*)*", redirect: "/notFound" },

@@ -48,7 +48,7 @@ const iconWidth = computed(() => {
     : calculateDistance(mouseX.value);
   if (!distance?.value || !magnification?.value) return 40;
   if (Math.abs(distanceCalc) < distance?.value) {
-    return (1 - Math.abs(distanceCalc) / distance?.value) * magnification?.value + 40;
+    return (1 - Math.abs(distanceCalc) / distance?.value) * magnification?.value +40;
   }
 
   return 40;
