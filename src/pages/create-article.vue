@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive } from 'vue';
 
 const formData = reactive({
     category: "",
@@ -55,7 +55,7 @@ const formData = reactive({
     description: "",
     content: null,
     tags: [""]
-})
+});
 
 const createArticle = () => {
     console.log("Article created:", formData);

@@ -20,15 +20,18 @@
                         <el-menu-item index="2" route="/dashboard/create-article">
                             <span>Создать</span>
                         </el-menu-item>
-                        <el-menu-item disabled index="3" route="/dashboard/category">
+                        <el-menu-item index="2" route="/dashboard/articles">
+                            <span>Статьи</span>
+                        </el-menu-item>
+                        <el-menu-item disabled index="3" route="/dashboard/categories">
                             <span>Категория</span>
                         </el-menu-item>
                     </el-menu>
                 </div>
             </el-aside>
-            <el-container>
-                <el-main class="m-10">
-                    <dashboard />
+            <el-container class="layout-container">
+                <el-main class="main-content">
+                    <RouterView />
                 </el-main>
             </el-container>
         </el-container>
@@ -36,6 +39,22 @@
 </template>
 
 <script setup lang="ts">
-import dashboard from '../pages/dashboard.vue';
 import { UserFilled } from '@element-plus/icons-vue'
 </script>
+
+<style scoped>
+.common-layout {
+  height: 100vh;
+  width: 100vw;
+}
+
+.layout-container {
+  height: 100vh;
+}
+
+.main-content {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2.5rem;
+}
+</style>

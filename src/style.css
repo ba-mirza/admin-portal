@@ -97,6 +97,8 @@
 
 html {
   color-scheme: light dark;
+  height: 100vh;
+  overflow: hidden;
 }
 html.dark {
   color-scheme: dark;
@@ -111,5 +113,6 @@ body {
   box-sizing: border-box;
   height: 100vh;
   background: #f3f5f7;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }

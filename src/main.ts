@@ -12,6 +12,9 @@ import { authStore } from "./stores/auth";
 
 import ElementPlus from "element-plus"
 import DashboardLayout from "./layouts/dashboard-layout.vue";
+import Articles from "./pages/articles.vue";
+import CreateArticle from "./pages/create-article.vue";
+import Categories from "./pages/categories.vue";
 
 const router = createRouter({
   routes: [
@@ -25,6 +28,11 @@ const router = createRouter({
       path: "/dashboard",
       component: DashboardLayout,
       // beforeEnter: requireAuth,
+      children: [
+        {path: '/dashboard/create-article', component: CreateArticle},
+        {path: '/dashboard/articles', component: Articles},
+        {path: '/dashboard/categories', component: Categories},
+      ]
     },
     { path: "/notFound", component: NotFound },
     { path: "/:pathMatch(.*)*", redirect: "/notFound" },
