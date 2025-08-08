@@ -3,6 +3,7 @@
         <h1 class="text-2xl font-medium">Создане статьи</h1>
         <div class="p-4 border-1 bg-white border-gray-400 border-dashed rounded-lg mt-4">
             <el-form label-position="top" :model="formData">
+                <UploadImage @imageSelected="onImageSelected" @image-removed="onImageRemoved" />
                 <el-form-item label="Категория">
                     <el-input v-model="formData.category" type="text" required clearable />
                 </el-form-item>
@@ -45,7 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import UploadImage from '../components/upload-image.vue';
 
 const formData = reactive({
     category: "",
@@ -56,6 +58,26 @@ const formData = reactive({
     content: null,
     tags: [""]
 });
+
+const selectedFile = ref<File | null>(null)
+
+const onImageSelected = (file: File, url: string) => {
+  selectedFile.value = file
+}
+
+// При сохранении статьи
+const saveArticle = async () => {
+  if (selectedFile.value) {
+    const formData = new FormData()
+    formData.append('image', selectedFile.value)
+    // отправить formData на сервер
+  }
+}
+
+const onImageRemoved = () => {
+  console.log('Изображение удалено')
+  // Очищаем URL в модели статьи
+}
 
 const createArticle = () => {
     console.log("Article created:", formData);
