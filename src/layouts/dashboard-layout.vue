@@ -44,17 +44,17 @@ import { UserFilled } from '@element-plus/icons-vue'
 
 <style scoped>
 .common-layout {
-  height: 100vh;
-  width: 100vw;
+    height: 100vh;
+    width: 100vw;
 }
 
 .layout-container {
-  height: 100vh;
+    height: 100vh;
 }
 
 .main-content {
-  height: 100%;
-  overflow-y: auto;
-  padding: 2.5rem;
+    height: 100%;
+    overflow-y: auto;
+    padding: 2.5rem;
 }
 </style>
