@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DialogPreview: typeof import('./src/components/dialog-preview.vue')['default']
     Dock: typeof import('./src/components/dock/Dock.vue')['default']
     DockIcon: typeof import('./src/components/dock/DockIcon.vue')['default']
     DockSeparator: typeof import('./src/components/dock/DockSeparator.vue')['default']
@@ -26,6 +27,7 @@ declare module 'vue' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElSplitter: typeof import('element-plus/es')['ElSplitter']
     ElSplitterPanel: typeof import('element-plus/es')['ElSplitterPanel']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     RouterLink: typeof import('vue-router')['RouterLink']
