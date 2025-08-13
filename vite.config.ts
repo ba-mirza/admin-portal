@@ -12,13 +12,20 @@ export default defineConfig({
   plugins: [
     vue(),
     tailwindcss(),
-    
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),
-
     Components({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3002',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
 });
