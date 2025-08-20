@@ -1,24 +1,25 @@
 import { reactive } from "vue";
 import type { AuthResponse, LoginCredentials, User } from "../types/auth";
 import { api } from "../api/axios";
+import { AUTH_TOKEN, AUTH_USER } from "../consts";
 
 interface AuthState {
   user: User | null;
-  token: string | null;
+  accessToken: string | null;
   loading: boolean;
 }
 
 const state = reactive<AuthState>({
   user: null,
-  token: null,
+  accessToken: null,
   loading: false
 });
 
 export const authStore = {
   get user() { return state.user; },
-  get token() { return state.token; },
+  get token() { return state.accessToken; },
   get loading() { return state.loading; },
-  get isAuthenticated() { return !!state.token && !!state.user; },
+  get isAuthenticated() { return !!state.accessToken && !!state.user; },
 
   // Авторизация
   async login(credentials: LoginCredentials) {
@@ -27,14 +28,13 @@ export const authStore = {
     try {
       const { data } = await api.post<AuthResponse>('/auth/login', credentials);
       
-      state.token = data.token;
+      state.accessToken = data.accessToken;
       state.user = data.user;
       
-      localStorage.setItem('auth_token', data.token);
-      localStorage.setItem('auth_user', JSON.stringify(data.user));
+      localStorage.setItem(AUTH_TOKEN, data.accessToken);
+      localStorage.setItem(AUTH_USER, JSON.stringify(data.user));
       
-      // Устанавливаем токен в headers для всех последующих запросов
-      api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
       
       return { success: true };
       
@@ -48,25 +48,38 @@ export const authStore = {
     }
   },
 
+  isTokenValid(): boolean {
+    const token = localStorage.getItem(AUTH_TOKEN);
+    if(!token) return false;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp * 1000;
+      return Date.now() < exp;
+    } catch {
+      return false;
+    }
+  },
+
   logout() {
-    state.token = null;
+    state.accessToken = null;
     state.user = null;
     
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_user');
+    localStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(AUTH_USER);
     
     delete api.defaults.headers.common['Authorization'];
     
-    window.location.href = '/login';
+    window.location.href = '/auth';
   },
 
   init() {
-    const token = localStorage.getItem('auth_token');
-    const userJson = localStorage.getItem('auth_user');
+    const token = localStorage.getItem(AUTH_TOKEN);
+    const userJson = localStorage.getItem(AUTH_USER);
     
     if (token && userJson) {
       try {
-        state.token = token;
+        state.accessToken = token;
         state.user = JSON.parse(userJson);
         
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;

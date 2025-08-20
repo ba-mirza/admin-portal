@@ -2,12 +2,17 @@
     <div class="w-2/3">
         <h1 class="text-2xl font-medium">Создане статьи</h1>
         <div class="p-4 border-1 bg-white border-gray-400 border-dashed rounded-lg mt-4">
-        <el-button @click="openPreview" type="primary" plain class="mb-4">Предварительный просмотр</el-button>
+            <el-button @click="openPreview" type="primary" plain class="mb-4">Предварительный просмотр</el-button>
             <DialogPreview v-model:dialog-visible="previewShow" :article-data="formData" />
             <el-form label-position="top" :model="formData">
                 <UploadImage @ready-image="handleImage" />
                 <el-form-item label="Категория">
-                    <el-input v-model="formData.category" type="text" required clearable />
+                    <el-select v-model="formData.category" placeholder="Категория" clearable>
+                        <el-option v-for="category in categories" :key="category.id" :label="category.name"
+                            :value="category.id">
+                            {{ category.name }}
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="Заголовок статьи">
                     <el-input v-model="formData.title" type="text" required clearable />
@@ -33,18 +38,22 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import UploadImage from '../components/upload-image.vue';
 import { QuillEditor } from '@vueup/vue-quill';
-import type { FormRequestData } from '../types/article';
 import DialogPreview from '../components/dialog-preview.vue';
+import { useAuth } from '../composables/useAuth';
+import { api } from '../api/axios';
 
 const editor = ref<InstanceType<typeof QuillEditor> | null>(null);
 const previewShow = ref<boolean>(false);
+const categories = ref<{ id: number, name: string, slug: string }>();
+
+const { user } = useAuth();
 
 const formData = reactive({
     category: "",
-    imagePreview: "",
+    imagePreview: null as File | null,
     title: "",
     excerpt: "",
     isPublished: false,
@@ -52,24 +61,50 @@ const formData = reactive({
     tags: [] as string[]
 });
 
-const handleImage = (image: any) => {
-    formData.imagePreview = image;
+const handleImage = (file: File) => {
+    formData.imagePreview = file;
 }
 
 const openPreview = () => {
     previewShow.value = true;
 }
 
-const createArticle = () => {
-    const requestData: FormRequestData = {
-        title: formData.title,
-        excerpt: formData.excerpt || "",
-        content: editor.value!.getHTML() || "",
-        isPublished: formData.isPublished,
-        category: formData.category,
-        tags: [...formData.tags],
-        imagePreview: formData.imagePreview
+onMounted(async () => {
+    try {
+        const { data } = await api.get('/categories/all');
+        categories.value = data;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Something went wrong');
     }
-    console.log("Article created:", requestData);
+})
+
+const createArticle = async () => {
+    const form = new FormData();
+
+    form.append("title", formData.title);
+    form.append("authorId", user.value!.id.toString());
+    form.append("excerpt", formData.excerpt || "");
+    form.append("content", editor.value!.getHTML() || "");
+    form.append("isPublished", String(formData.isPublished));
+    form.append("category", formData.category);
+    form.append("tags", JSON.stringify(formData.tags));
+
+    if (formData.imagePreview) {
+        form.append("imagePreview", formData.imagePreview);
+    }
+
+    try {
+        const { data } = await api.post('/articles/create', form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log(data);
+    } catch(error) {
+        console.error(error.response);
+    }
+
+    console.log("Article created", form.get('imagePreview'));
 }
 </script>

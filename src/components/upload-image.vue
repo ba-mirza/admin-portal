@@ -13,14 +13,14 @@ import { ref } from 'vue';
 import { Plus } from '@element-plus/icons-vue';
 import type { UploadFile } from 'element-plus';
 
-const emit = defineEmits<{ readyImage: [img: any] }>();
+const emit = defineEmits<{ 'ready-image': [img: File] }>();
 
 const imageUrl = ref<string>('');
 
 const handleChangeImage = (file: UploadFile) => {
   if (file.raw) {
     imageUrl.value = URL.createObjectURL(file.raw);
-    emit('readyImage', file.raw);
+    emit('ready-image', file.raw);
   }
 }
 </script>

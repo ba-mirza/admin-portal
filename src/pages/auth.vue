@@ -4,16 +4,16 @@
             <el-splitter-panel :resizable="false" size="40%">
                 <h1 class="text-lg font-bold text-center mt-60">Авторизация</h1>
                 <div class="p-4">
-                    <el-form label-width="auto" :model="form" class="w-full flex flex-col gap-4 px-30" @submit="toAuth">
-                        <el-input v-model="form.login" type="email" placeholder="example@....kz" />
+                    <el-form label-width="auto" :model="form" class="w-full flex flex-col gap-4 px-30" @submit="submitLogin">
+                        <el-input v-model="form.email" type="email" placeholder="example@....kz" />
                         <el-input v-model="form.password" type="password" show-password />
-                        <el-button type="primary" @click="toAuth">Login</el-button>
+                        <el-button type="primary" @click="submitLogin" :disabled="loading">Login</el-button>
                     </el-form>
                 </div>
             </el-splitter-panel>
             <el-splitter-panel :min="200">
-                <div class="demo-panel">
-                    <h1>Authorization</h1>
+                <div class="flex justify-center mt-50">
+                    <img class="scale-75" src="/logo.png" alt="logo"></img>
                 </div>
             </el-splitter-panel>
         </el-splitter>
@@ -21,14 +21,27 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
+import { useAuth } from "../composables/useAuth";
+import type { LoginCredentials } from "../types/auth";
+import { useRouter } from "vue-router";
 
-const form = reactive({
-    login: "",
+const router = useRouter();
+const { login, loading } = useAuth();
+
+const errorMessage = ref<string>();
+const form = reactive<LoginCredentials>({
+    email: "",
     password: "",
 });
 
-const toAuth = (e: Event) => {
-    e.preventDefault();
+const submitLogin = async () => {
+    const result = await login(form);
+    if(result.success) {
+        router.push('/dashboard');
+        return;
+    }
+
+    errorMessage.value = result.error;
 }
 </script>

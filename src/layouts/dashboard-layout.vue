@@ -9,8 +9,9 @@
                     <div class="flex items-center">
                         <el-avatar class="m-4" size="large" :icon="UserFilled" />
                         <div>
-                            <h1 class="select-none text-2xl font-medium">Firstname</h1>
-                            <h1 class="select-none text-md font-normal">Journalist</h1>
+                            <h1 class="select-none text-2xl font-medium">{{ user?.name }}</h1>
+                            <h1 class="select-none text-md font-normal">{{ user?.role }}</h1>
+                            <el-button @click="logout">Logout</el-button>
                         </div>
                     </div>
                 </div>
@@ -40,6 +41,9 @@
 
 <script setup lang="ts">
 import { UserFilled } from '@element-plus/icons-vue'
+import { useAuth } from '../composables/useAuth';
+const { logout, user } = useAuth();
+
 </script>
 
 <style scoped>

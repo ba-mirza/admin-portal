@@ -1,8 +1,7 @@
 export interface User {
   id: number;
-  email: string;
   name: string;
-  role?: string;
+  role: string;
 }
 
 export interface LoginCredentials {
@@ -11,7 +10,7 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken: string;
   user: User;
 }
 

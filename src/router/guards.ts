@@ -6,21 +6,9 @@ export const requireAuth = (
   from: RouteLocationNormalized, 
   next: NavigationGuardNext
 ) => {
-  if (authStore.isAuthenticated) {
+  if (authStore.isAuthenticated && authStore.isTokenValid()) {
     next();
   } else {
     next('/login');
   }
 };
-
-export const requireGuest = (
-  to: RouteLocationNormalized, 
-  from: RouteLocationNormalized, 
-  next: NavigationGuardNext
-) => {
-  if (!authStore.isAuthenticated) {
-    next();
-  } else {
-    next('/dashboard');
-  }
-}
