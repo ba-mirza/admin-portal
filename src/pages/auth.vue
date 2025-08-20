@@ -7,7 +7,7 @@
                     <el-form label-width="auto" :model="form" class="w-full flex flex-col gap-4 px-30" @submit="submitLogin">
                         <el-input v-model="form.email" type="email" placeholder="example@....kz" />
                         <el-input v-model="form.password" type="password" show-password />
-                        <el-button type="primary" @click="submitLogin" :disabled="loading">Login</el-button>
+                        <el-button type="primary" @click="submitLogin" :disabled="loading">Войти</el-button>
                     </el-form>
                 </div>
             </el-splitter-panel>

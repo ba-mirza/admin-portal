@@ -9,6 +9,6 @@ export const requireAuth = (
   if (authStore.isAuthenticated && authStore.isTokenValid()) {
     next();
   } else {
-    next('/login');
+    next('/auth');
   }
 };
