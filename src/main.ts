@@ -25,12 +25,13 @@ const router = createRouter({
     },
     {
       path: "/dashboard",
+      name: "dashboard",
       component: DashboardLayout,
       beforeEnter: requireAuth,
       children: [
-        {path: '/dashboard/create-article', component: CreateArticle},
-        {path: '/dashboard/articles', component: Articles},
-        {path: '/dashboard/categories', component: Categories},
+        {path: '/dashboard/create-article', name: "create-article", component: CreateArticle},
+        {path: '/dashboard/articles', name: "articles", component: Articles},
+        {path: '/dashboard/categories', name: "categories", component: Categories},
       ]
     },
     { path: "/notFound", component: NotFound },

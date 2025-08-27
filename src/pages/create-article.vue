@@ -1,6 +1,6 @@
 <template>
     <div class="w-2/3">
-        <h1 class="text-2xl font-medium">Создане статьи</h1>
+        <slot></slot>
         <div class="p-4 border-1 bg-white border-gray-400 border-dashed rounded-lg mt-4">
             <el-button @click="openPreview" type="primary" plain class="mb-4">Предварительный просмотр</el-button>
             <DialogPreview v-model:dialog-visible="previewShow" :article-data="formData" />
@@ -75,7 +75,6 @@ onMounted(async () => {
         categories.value = data;
     } catch (error) {
         console.error(error);
-        throw new Error('Something went wrong');
     }
 })
 

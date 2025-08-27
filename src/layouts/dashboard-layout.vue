@@ -32,6 +32,7 @@
             </el-aside>
             <el-container class="layout-container">
                 <el-main class="main-content">
+                    <h1 class="text-2xl font-medium">{{ routeName }}</h1>
                     <RouterView />
                 </el-main>
             </el-container>
@@ -42,7 +43,14 @@
 <script setup lang="ts">
 import { UserFilled } from '@element-plus/icons-vue'
 import { useAuth } from '../composables/useAuth';
+import { useRoute } from 'vue-router';
+import { ROUTES } from '../consts';
+import { computed } from 'vue';
+
 const { logout, user } = useAuth();
+const route = useRoute();
+
+const routeName = computed(() => { return ROUTES[route.name as string] })
 
 </script>
 
