@@ -1,7 +1,7 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <el-aside class="bg-white/50 border-r-1 border-gray-400 border-dashed" width="400px">
+            <el-aside class="bg-white/50 border-r-1 border-gray-400 border-dashed" width="350px">
                 <div class="flex justify-center mt-5">
                     <el-image class="mt-2" style="width: 250px;" src="/logo.png" fit="cover" lazy />
                 </div>

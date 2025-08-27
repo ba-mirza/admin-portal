@@ -73,12 +73,14 @@ import DialogPreview from "../components/dialog-preview.vue";
 import { useAuth } from "../composables/useAuth";
 import { api } from "../api/axios";
 import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
 
 const editor = ref<InstanceType<typeof QuillEditor> | null>(null);
 const previewShow = ref<boolean>(false);
 const categories = ref<{ id: number; name: string; slug: string }>();
 
 const { user } = useAuth();
+const router = useRouter();
 
 const formData = reactive({
   category: "",
@@ -127,11 +129,17 @@ const createArticle = async () => {
   }
 
   try {
-    const { data } = await api.post("/articles/create", form, {
+    const response = await api.post("/articles/create", form, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+
+    if(response.status === 200 || response.status === 201) {
+        router.push('/dashboard/articles')
+        return
+    }
+
   } catch (error) {
     console.error(error.response);
   }
