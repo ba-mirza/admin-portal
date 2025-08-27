@@ -3,20 +3,19 @@
         <el-container>
             <el-aside class="bg-white/50 border-r-1 border-gray-400 border-dashed" width="400px">
                 <div class="flex justify-center mt-5">
-                    <h1 class="text-5xl">LOGO</h1>
+                    <el-image class="mt-2" style="width: 250px;" src="/logo.png" fit="cover" lazy />
                 </div>
-                <div class="mt-10 m-auto w-xs border-1 rounded-lg border-gray-400 p-4 bg-white">
-                    <div class="flex items-center">
-                        <el-avatar class="m-4" size="large" :icon="UserFilled" />
+                <div class="mt-10 m-auto w-2/3 border-1 rounded-lg border-gray-400 p-4 bg-white">
+                    <div class="flex items-center justify-around">
                         <div>
                             <h1 class="select-none text-2xl font-medium">{{ user?.name }}</h1>
-                            <h1 class="select-none text-md font-normal">{{ user?.role }}</h1>
-                            <el-button @click="logout">Logout</el-button>
+                            <h1 class="select-none text-md font-normal">Редактор</h1>
                         </div>
+                        <el-button @click="logout">Logout</el-button>
                     </div>
                 </div>
                 <div
-                    class="mt-10 m-auto w-2xs flex flex-col items-center justify-center border-1 rounded-2xl border-gray-300 p-4 h-auto bg-white">
+                    class="mt-6 m-auto w-2xs flex flex-col items-center justify-center border-1 rounded-2xl border-gray-300 p-4 h-auto bg-white">
                     <el-menu class="w-full" default-active="1" router>
                         <el-menu-item index="2" route="/dashboard/create-article">
                             <span>Создать</span>
@@ -41,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { UserFilled } from '@element-plus/icons-vue'
 import { useAuth } from '../composables/useAuth';
 import { useRoute } from 'vue-router';
 import { ROUTES } from '../consts';
