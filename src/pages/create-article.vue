@@ -127,7 +127,7 @@ const createArticle = async () => {
   }
 
   try {
-    const { data } = await api.post("/articles/crate", form, {
+    const { data } = await api.post("/articles/create", form, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
