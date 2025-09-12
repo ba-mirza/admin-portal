@@ -5,36 +5,49 @@ import App from "./App.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { createRouter, createWebHistory} from "vue-router";
-import NotFound from "./pages/notFound.vue";
-import Auth from "./pages/auth.vue";
 import { requireAuth } from "./router/guards";
 import { authStore } from "./stores/auth";
 
 import ElementPlus from "element-plus"
-import DashboardLayout from "./layouts/dashboard-layout.vue";
-import Articles from "./pages/articles.vue";
-import CreateArticle from "./pages/create-article.vue";
-import Categories from "./pages/categories.vue";
 
 const router = createRouter({
   routes: [
     { path: "/", redirect: "/dashboard" },
     {
       path: "/auth",
-      component: Auth,
+      component: () => import('./pages/auth.vue'),
     },
     {
       path: "/dashboard",
       name: "dashboard",
-      component: DashboardLayout,
+      component: () => import('./layouts/dashboard-layout.vue'),
       beforeEnter: requireAuth,
       children: [
-        {path: '/dashboard/create-article', name: "create-article", component: CreateArticle},
-        {path: '/dashboard/articles', name: "articles", component: Articles},
-        {path: '/dashboard/categories', name: "categories", component: Categories},
+        {
+          path: '/dashboard/create-article',
+          name: "create-article",
+          component: () => import('./pages/create-article.vue'),
+        },
+        {
+          path: '/dashboard/articles',
+          name: "articles",
+          component: () => import('./pages/articles.vue'),
+          children: [
+            {
+              path: '/articles/:id',
+              name: "articleId",
+              component: () => import('./pages/edit-article.vue'),
+            }
+          ]
+        },
+        {
+          path: '/dashboard/categories',
+          name: "categories",
+          component: () => import('./pages/categories.vue')
+        },
       ]
     },
-    { path: "/notFound", component: NotFound },
+    { path: "/notFound", component: () => import('./pages/notFound.vue') },
     { path: "/:pathMatch(.*)*", redirect: "/notFound" },
   ],
   history: createWebHistory(),

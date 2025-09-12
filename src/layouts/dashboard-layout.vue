@@ -26,6 +26,9 @@
                         <el-menu-item disabled index="3" route="/dashboard/categories">
                             <span>Категория</span>
                         </el-menu-item>
+                        <el-menu-item disabled index="3">
+                            <span>Теги</span>
+                        </el-menu-item>
                     </el-menu>
                 </div>
             </el-aside>
