@@ -4,101 +4,32 @@
     <div
       class="p-4 border-1 bg-white border-gray-400 border-dashed rounded-lg mt-4"
     >
-      <el-button @click="openPreview" type="primary" plain class="mb-4"
-        >Предварительный просмотр</el-button
-      >
-      <DialogPreview
-        v-model:dialog-visible="previewShow"
-        :article-data="formData"
-      />
-      <el-form label-position="top" :model="formData">
-        <UploadImage @ready-image="handleImage" />
-        <el-form-item label="Категория">
-          <el-select
-            v-model="formData.category"
-            placeholder="Категория"
-            clearable
-          >
-            <el-option
-              v-for="category in categories"
-              :key="category.id"
-              :label="category.name"
-              :value="category.id"
-            >
-              {{ category.name }}
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Заголовок статьи">
-          <el-input v-model="formData.title" type="text" required clearable />
-        </el-form-item>
-        <el-form-item label="Краткое описание">
-          <el-input v-model="formData.excerpt" type="textarea" />
-        </el-form-item>
-        <QuillEditor
-          ref="editor"
-          style="height: 400px"
-          placeholder="DEV"
-          toolbar="full"
-          theme="snow"
-        />
-        <el-form-item class="mt-2" label="Теги">
-          <el-input-tag
-            tag-type="primary"
-            tag-effect="plain"
-            clearable
-            v-model="formData.tags"
-            aria-label="Please click the Enter key after input"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-switch
-            active-text="Опубликовать"
-            v-model="formData.isPublished"
-          />
-        </el-form-item>
-        <el-form-item class="mt-4">
-          <el-button type="primary" @click="createArticle">Отправить</el-button>
-        </el-form-item>
-      </el-form>
+    <ArticleForm
+      :categories="categories"
+      @submit="createArticle"
+      @preview="handlePreview"
+      submit-text="Отправить"
+    />
+
+    <DialogPreview v-model:dialog-visible="previewShow" :article-data="previewData" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
-import UploadImage from "../components/upload-image.vue";
-import { QuillEditor } from "@vueup/vue-quill";
+import { ref, onMounted } from "vue";
+import ArticleForm from "../components/ArticleForm.vue";
 import DialogPreview from "../components/dialog-preview.vue";
-import { useAuth } from "../composables/useAuth";
 import { api } from "../api/axios";
-import { ElMessage } from "element-plus";
+import { useAuth } from "../composables/useAuth";
 import { useRouter } from "vue-router";
-
-const editor = ref<InstanceType<typeof QuillEditor> | null>(null);
-const previewShow = ref<boolean>(false);
-const categories = ref<{ id: number; name: string; slug: string }>();
 
 const { user } = useAuth();
 const router = useRouter();
 
-const formData = reactive({
-  category: "",
-  imagePreview: null as File | null,
-  title: "",
-  excerpt: "",
-  isPublished: false,
-  content: null,
-  tags: [] as string[],
-});
-
-const handleImage = (file: File) => {
-  formData.imagePreview = file;
-};
-
-const openPreview = () => {
-  previewShow.value = true;
-};
+const categories = ref<Array<{ id: number; name: string; slug?: string }>>([]);
+const previewShow = ref(false);
+const previewData = ref<any>(null);
 
 const getCategories = async () => {
   try {
@@ -113,35 +44,35 @@ onMounted(async () => {
   await getCategories();
 });
 
-const createArticle = async () => {
+const handlePreview = (payload: any) => {
+  previewData.value = payload;
+  previewShow.value = true;
+};
+
+const createArticle = async (payload: any) => {
   const form = new FormData();
-
-  form.append("title", formData.title);
+  form.append("title", payload.title || "");
   form.append("authorId", user.value!.id.toString());
-  form.append("excerpt", formData.excerpt || "");
-  form.append("content", editor.value!.getHTML() || "");
-  form.append("isPublished", String(formData.isPublished));
-  form.append("category", formData.category);
-  form.append("tags", JSON.stringify(formData.tags));
+  form.append("excerpt", payload.excerpt || "");
+  form.append("content", payload.content || "");
+  form.append("isPublished", String(!!payload.isPublished));
+  form.append("category", String(payload.category || ""));
+  form.append("tags", JSON.stringify(payload.tags || []));
 
-  if (formData.imagePreview) {
-    form.append("imagePreview", formData.imagePreview);
+  if (payload.imagePreview) {
+    form.append("imagePreview", payload.imagePreview);
   }
 
   try {
     const response = await api.post("/articles/create", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
-    if(response.status === 200 || response.status === 201) {
-        router.push('/dashboard/articles')
-        return
+    if (response.status === 200 || response.status === 201) {
+      router.push("/dashboard/articles");
     }
-
-  } catch (error) {
-    console.error(error.response);
+  } catch (error: any) {
+    console.error(error?.response ?? error);
   }
 };
 </script>

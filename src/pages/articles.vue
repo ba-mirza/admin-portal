@@ -20,7 +20,7 @@
           <template #default="scope">
             <el-button
               size="small"
-              @click="handleEdit(scope.$index, scope.row)"
+              @click="handleEdit(scope.row)"
             >
               Править
             </el-button>
@@ -34,9 +34,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { api } from "../api/axios";
+import { useRouter } from "vue-router";
 
 const dataArticles = ref<Array<any>>([]);
 const search = ref<string>("");
+const router = useRouter();
 
 const filteredData = computed(() => {
   return dataArticles.value.filter(
@@ -57,8 +59,11 @@ const getAllArticles = async () => {
   }
 };
 
-const handleEdit = (index: number, row: any) => {
-  console.log(index, row);
+const handleEdit = (row: any) => {
+  router.push({
+    path: `/articles/${row.id}`,
+    state: { article: row },
+  });
 };
 
 onMounted(async () => {
