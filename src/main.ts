@@ -24,24 +24,22 @@ const router = createRouter({
       beforeEnter: requireAuth,
       children: [
         {
-          path: '/dashboard/create-article',
+          path: 'create-article',
           name: "create-article",
           component: () => import('./pages/create-article.vue'),
         },
         {
-          path: '/dashboard/articles',
+          path: 'articles',
           name: "articles",
           component: () => import('./pages/articles.vue'),
-          children: [
-            {
-              path: '/articles/:id',
-              name: "articleId",
-              component: () => import('./pages/edit-article.vue'),
-            }
-          ]
         },
         {
-          path: '/dashboard/categories',
+          path: 'articles/:id',
+          name: "articleId",
+          component: () => import('./pages/edit-article.vue'),
+        },
+        {
+          path: 'categories',
           name: "categories",
           component: () => import('./pages/categories.vue')
         },

@@ -61,7 +61,8 @@ const getAllArticles = async () => {
 
 const handleEdit = (row: any) => {
   router.push({
-    path: `/articles/${row.id}`,
+    name: 'articleId',
+    params: { id: row.id },
     state: { article: row },
   });
 };
